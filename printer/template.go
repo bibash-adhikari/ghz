@@ -1,5 +1,59 @@
 package printer
 
+import (
+	"time"
+)
+
+type Options struct {
+	Call              string   `json:"call,omitempty"`
+	Host              string   `json:"host,omitempty"`
+	Proto             string   `json:"proto,omitempty"`
+	Protoset          string   `json:"protoset,omitempty"`
+	ImportPaths       []string `json:"import-paths,omitempty"`
+	EnableCompression bool     `json:"enable-compression,omitempty"`
+
+	CACert    string `json:"cacert,omitempty"`
+	Cert      string `json:"cert,omitempty"`
+	Key       string `json:"key,omitempty"`
+	CName     string `json:"cname,omitempty"`
+	SkipTLS   bool   `json:"skipTLS,omitempty"`
+	Insecure  bool   `json:"insecure"`
+	Authority string `json:"authority,omitempty"`
+
+	RPS              int           `json:"rps,omitempty"`
+	LoadSchedule     string        `json:"load-schedule"`
+	LoadStart        int           `json:"load-start"`
+	LoadEnd          int           `json:"load-end"`
+	LoadStep         int           `json:"load-step"`
+	LoadStepDuration time.Duration `json:"load-step-duration"`
+	LoadMaxDuration  time.Duration `json:"load-max-duration"`
+
+	Concurrency   int           `json:"concurrency,omitempty"`
+	CSchedule     string        `json:"concurrency-schedule"`
+	CStart        int           `json:"concurrency-start"`
+	CEnd          int           `json:"concurrency-end"`
+	CStep         int           `json:"concurrency-step"`
+	CStepDuration time.Duration `json:"concurrency-step-duration"`
+	CMaxDuration  time.Duration `json:"concurrency-max-duration"`
+
+	Total int  `json:"total,omitempty"`
+	Async bool `json:"async,omitempty"`
+
+	Connections   int           `json:"connections,omitempty"`
+	Duration      time.Duration `json:"duration,omitempty"`
+	Timeout       time.Duration `json:"timeout,omitempty"`
+	DialTimeout   time.Duration `json:"dial-timeout,omitempty"`
+	KeepaliveTime time.Duration `json:"keepalive,omitempty"`
+
+	Metadata *map[string]string `json:"metadata,omitempty"`
+
+	CPUs int    `json:"CPUs"`
+	Name string `json:"name,omitempty"`
+
+	SkipFirst   int  `json:"skipFirst,omitempty"`
+	CountErrors bool `json:"count-errors,omitempty"`
+}
+
 var (
 	defaultTmpl = `
 Summary:
@@ -316,7 +370,9 @@ duration (ms),status,error{{ range $i, $v := .Details }}
 					</a>
 					<article class="message">
 						<div class="message-body">
-							<pre style="background-color: transparent;">{{ jsonify .Options true }}</pre>
+						// {{ delete .Options.data }}
+						// {{ json.Unmarshal([]byte(json.Marshal(.Options)), &RecordShot)}}
+						 <pre style="background-color: transparent;">{{ jsonify json.Unmarshal([]byte(json.Marshal(.Options)), &RecordShot) true }}</pre>
 						</div>
 					</article>
 				</div>
