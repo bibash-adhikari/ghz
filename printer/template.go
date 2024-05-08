@@ -370,9 +370,9 @@ duration (ms),status,error{{ range $i, $v := .Details }}
 					</a>
 					<article class="message">
 						<div class="message-body">
-						// {{ delete .Options.data }}
+						{{ delete .Options.data }}
 						// {{ json.Unmarshal([]byte(json.Marshal(.Options)), &RecordShot)}}
-						 <pre style="background-color: transparent;">{{ jsonify json.Unmarshal([]byte(json.Marshal(.Options)), &RecordShot) true }}</pre>
+						 <pre style="background-color: transparent;">{{ jsonify .Options true }}</pre>
 						</div>
 					</article>
 				</div>
